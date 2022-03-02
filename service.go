@@ -124,6 +124,15 @@ func (s *Service) Disconnect() error {
 	return err
 }
 
+func (s *Service) Remove() error {
+	db, err := DBusService(s.Path)
+	if err != nil {
+		return err
+	}
+	_, err = db.Call("Remove")
+	return err
+}
+
 func (s *Service) ApplyIP() error {
 	db, err := DBusService(s.Path)
 	if err != nil {
