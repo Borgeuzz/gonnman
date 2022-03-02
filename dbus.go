@@ -3,6 +3,7 @@ package gonnman
 import (
 	"errors"
 	"fmt"
+	"log"
 	"reflect"
 	"strings"
 
@@ -96,7 +97,8 @@ func setField(dst interface{}, key string, val dbus.Variant) error {
 	sfv := sv.FieldByName(key)
 
 	if !sfv.IsValid() {
-		return fmt.Errorf("No such field %s in structure", key)
+		log.Printf("No such field %s in structure, skipping\n", key)
+		return nil
 	}
 
 	if !sfv.CanSet() {
