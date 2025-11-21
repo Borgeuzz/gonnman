@@ -99,7 +99,7 @@ func (s *Service) Connect(ssid, psk string) error {
 	}
 
 	if ag == nil {
-		return fmt.Errorf("Could not spawn a new agent\n")
+		return fmt.Errorf("could not spawn a new agent")
 	}
 
 	if err := RegisterAgent(ag); err != nil {

@@ -58,7 +58,7 @@ func (t *Technology) EnableTethering(ssid string, psk string) error {
 		log.Printf("Setting up TetheringPassphrase: %v\n", psk)
 		db.Set("TetheringPassphrase", psk)
 	} else {
-		return fmt.Errorf("Passphrase too short or too long: %v", psk)
+		return fmt.Errorf("passphrase too short or too long: %v", psk)
 	}
 	log.Printf("Enabling tethering: %v - %v\n", ssid, psk)
 	return db.Set("Tethering", true)

@@ -3,7 +3,6 @@ package gonnman
 import (
 	"errors"
 	"fmt"
-	"log"
 	"reflect"
 	"strings"
 
@@ -34,7 +33,7 @@ func (db *DBusInterface) Get(name string) (interface{}, error) {
 
 	props := call.Body[0].(map[string]dbus.Variant)
 	if prop, ok := props[name]; !ok {
-		return nil, errors.New("Invalid property")
+		return nil, errors.New("invalid property")
 	} else {
 		return prop.Value(), nil
 	}
@@ -91,18 +90,17 @@ func DBusTechnology(tech dbus.ObjectPath) (*DBusInterface, error) {
  */
 
 func setField(dst interface{}, key string, val dbus.Variant) error {
-	key = strings.Replace(key, ".", "", -1)
+	key = strings.ReplaceAll(key, ".", "")
 
 	sv := reflect.ValueOf(dst).Elem()
 	sfv := sv.FieldByName(key)
 
 	if !sfv.IsValid() {
-		log.Printf("No such field %s in structure, skipping\n", key)
 		return nil
 	}
 
 	if !sfv.CanSet() {
-		return fmt.Errorf("Cannot set %s field value", key)
+		return fmt.Errorf("cannot set %s field value", key)
 	}
 
 	sft := sfv.Type()
@@ -119,7 +117,7 @@ func setField(dst interface{}, key string, val dbus.Variant) error {
 
 	default:
 		if sft != vt {
-			return fmt.Errorf("Value type (%v) does not match field type (%s) : %v",
+			return fmt.Errorf("value type (%v) does not match field type (%s) : %v",
 				vt, sft.Name(), v)
 		}
 		sfv.Set(v)
@@ -148,7 +146,7 @@ func structToDict(src interface{}) (map[string]dbus.Variant, error) {
 	}
 
 	if st.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("Expected struct, found %v", st.Kind())
+		return nil, fmt.Errorf("expected struct, found %v", st.Kind())
 	}
 
 	ret := make(map[string]dbus.Variant)
@@ -165,7 +163,6 @@ func structToDict(src interface{}) (map[string]dbus.Variant, error) {
 				return nil, err
 			}
 			ret[sfn] = dbus.MakeVariant(sub)
-			break
 
 		default:
 			ret[sfn] = dbus.MakeVariant(sfv)

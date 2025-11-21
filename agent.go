@@ -56,7 +56,7 @@ func (a *Agent) Destroy() error {
 		return err
 	}
 	if reply != dbus.ReleaseNameReplyReleased {
-		return fmt.Errorf("Could not release the name\n")
+		return fmt.Errorf("could not release the name")
 	}
 
 	conn.Export(nil, a.Path, a.Interface)
