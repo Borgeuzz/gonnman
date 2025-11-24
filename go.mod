@@ -1,4 +1,4 @@
-module github.com/gochik/gonnman
+module github.com/Borgeuzz/gonnman
 
 go 1.17
 
