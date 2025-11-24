@@ -154,18 +154,25 @@ func structToDict(src interface{}) (map[string]dbus.Variant, error) {
 	for i := 0; i < sv.NumField(); i++ {
 		sft := st.Field(i).Type
 		sfn := st.Field(i).Name
-		sfv := sv.Field(i).Interface()
+		sfv := sv.Field(i)
+
+		// Skip empty fields
+		if sfv.IsZero() {
+			continue
+		}
+
+		sfvInterface := sfv.Interface()
 
 		switch sft.Kind() {
 		case reflect.Struct:
-			sub, err := structToDict(sfv)
+			sub, err := structToDict(sfvInterface)
 			if err != nil {
 				return nil, err
 			}
 			ret[sfn] = dbus.MakeVariant(sub)
 
 		default:
-			ret[sfn] = dbus.MakeVariant(sfv)
+			ret[sfn] = dbus.MakeVariant(sfvInterface)
 		}
 	}
 
