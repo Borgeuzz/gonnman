@@ -1,4 +1,4 @@
-module github.com/Borgeuzz/gonnman
+module github.com/mirgolang/gonnman
 
 go 1.17
 
